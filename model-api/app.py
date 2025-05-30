@@ -1,15 +1,16 @@
 from flask import Flask, request, jsonify
 import pickle
 import numpy as np
+import joblib
 
 app = Flask(__name__)
 
 # Load your model and scaler once when app starts
 with open('model.pkl', 'rb') as f:
-    model = pickle.load(f)
+    model = joblib.load(f)
 
 with open('scaler.pkl', 'rb') as f:
-    scaler = pickle.load(f)
+    scaler = joblib.load(f)
 
 @app.route('/predict', methods=['POST'])
 def predict():
