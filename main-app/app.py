@@ -249,7 +249,7 @@ def predict():
     if not features:
         return jsonify({'error': 'No features provided'}), 400
 
-    model_api_url = 'http://your-model-api-url/predict'  # Replace this with your actual model API URL
+    model_api_url = 'https://model-api-2tkg.onrender.com'  # Replace this with your actual model API URL
 
     try:
         response = requests.post(model_api_url, json={'features': features})
