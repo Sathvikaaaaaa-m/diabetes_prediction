@@ -239,7 +239,36 @@ def checkup():
 # Create tables
 with app.app_context():
     db.create_all()
+    import requests  # Make sure this import is at the top of your file if not already
+
+@app.route('/predict', methods=['POST'])
+@login_required
+def predict():
+    data = request.json
+    features = data.get('features')
+    if not features:
+        return jsonify({'error': 'No features provided'}), 400
+
+    model_api_url = 'http://your-model-api-url/predict'  # Replace this with your actual model API URL
+
+    try:
+        response = requests.post(model_api_url, json={'features': features})
+        response.raise_for_status()  # Raises HTTPError if the request returned an unsuccessful status code
+        prediction = response.json().get('prediction')
+
+        if prediction is None:
+            return jsonify({'error': 'Prediction missing in response'}), 500
+
+        return jsonify({'prediction': prediction})
+
+    except requests.exceptions.RequestException as e:
+        print(f"Error calling model API: {e}")
+        return jsonify({'error': 'Failed to get prediction from model API'}), 500
+
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5001, use_reloader=False, threaded=False)      
+    import os
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
+   
     
