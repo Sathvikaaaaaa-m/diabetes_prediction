@@ -266,8 +266,8 @@ def predict():
         return jsonify({'error': 'Failed to get prediction from model API'}), 500
 
 # Create tables if they don't exist
-//with app.app_context():
- //   db.create_all()
+#with app.app_context():
+#   db.create_all()
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 10000))  # Render injects this PORT
